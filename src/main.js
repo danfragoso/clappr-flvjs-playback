@@ -68,7 +68,7 @@ class FLVJSPlayback extends HTML5Video {
   }
 
   getPlaybackType () {
-    return (this.isReady && this._isLive ? Playback.LIVE : Playback.VOD)
+    return Playback.LIVE
   }
 
   play () {
