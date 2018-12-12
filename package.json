@@ -4,7 +4,8 @@
   "description": "clappr flv playback based on flv.js",
   "main": "dist/clappr-flvjs-playback.min.js",
   "scripts": {
-    "release": "standard && webpack --mode production",
+    "release": "standard && webpack --mode production && npm run append",
+    "append": "cat ./src/watcher.ts >> ./dist/clappr-flvjs-playback.min.js",
     "start": "webpack-dev-server --mode development",
     "lint": "standard",
     "fix": "standard --fix"

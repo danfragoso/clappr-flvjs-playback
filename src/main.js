@@ -42,6 +42,7 @@ class FLVJSPlayback extends HTML5Video {
       url: this.options.src,
       isLive: true
     }
+
     const flvjsConfig = this.options.playback.flvjsConfig || {}
     this._isLive = true
 
@@ -49,9 +50,10 @@ class FLVJSPlayback extends HTML5Video {
     flvjs.LoggingControl.enableAll = enableLogging
     flvjsConfig.enableStashBuffer = false
     flvjsConfig.enableWorker = true
+    flvjsConfig.lazyLoad = false
     flvjsConfig.autoCleanupSourceBuffer = true
-    flvjsConfig.autoCleanupMaxBackwardDuration = 30
-    flvjsConfig.autoCleanupMinBackwardDuration = 15
+    flvjsConfig.autoCleanupMaxBackwardDuration = 1
+    flvjsConfig.autoCleanupMinBackwardDuration = 1
 
     this._player = flvjs.createPlayer(mediaDataSource, flvjsConfig)
     this._player.on(flvjs.Events.ERROR, this._onError.bind(this))
@@ -78,6 +80,7 @@ class FLVJSPlayback extends HTML5Video {
   }
 
   play () {
+    this._destroy()
     this._setup()
     this._player.load()
     super.play()

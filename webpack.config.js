@@ -49,7 +49,6 @@ const config = {
 module.exports = (_, { mode }) => {
   if (mode === 'production') {
     config.output.filename = `${pluginName}.min.js`
-    config.devtool = 'source-map'
   } else {
     config.output.filename = `${pluginName}.js`
     config.devtool = 'inline-source-map'
