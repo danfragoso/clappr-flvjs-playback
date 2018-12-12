@@ -39,13 +39,19 @@ class FLVJSPlayback extends HTML5Video {
   _setup () {
     const mediaDataSource = {
       type: EXTENSION,
-      url: this.options.src
+      url: this.options.src,
+      isLive: true
     }
     const flvjsConfig = this.options.playback.flvjsConfig || {}
-    this._isLive = flvjsConfig.isLive || false
+    this._isLive = true
 
     const enableLogging = flvjsConfig.enableLogging || false
     flvjs.LoggingControl.enableAll = enableLogging
+    flvjsConfig.enableStashBuffer = false
+    flvjsConfig.enableWorker = true
+    flvjsConfig.autoCleanupSourceBuffer = true
+    flvjsConfig.autoCleanupMaxBackwardDuration = 30
+    flvjsConfig.autoCleanupMinBackwardDuration = 15
 
     this._player = flvjs.createPlayer(mediaDataSource, flvjsConfig)
     this._player.on(flvjs.Events.ERROR, this._onError.bind(this))
@@ -68,11 +74,12 @@ class FLVJSPlayback extends HTML5Video {
   }
 
   getPlaybackType () {
-    return (this.isReady && this._isLive ? Playback.LIVE : Playback.VOD)
+    return Playback.LIVE
   }
 
   play () {
-    !this._player && this._setup()
+    this._setup()
+    this._player.load()
     super.play()
   }
 
